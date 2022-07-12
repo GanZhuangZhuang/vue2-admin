@@ -1,24 +1,11 @@
-/**
- * 引入axios
- *
- * 创建axios实例对象
- *
- * 创建请求拦截器
- *
- * 创建响应拦截器
- *
- * 统一传参方式   处理 get请求方式依旧可以使用data方式传参
- *
- * 全局loading加载
- *
- * 处理路由切换接口重复请求
- *
- * 导出axios实例对象
- *
- */
-
 // 导入axios
 import axios from 'axios'
+
+// 导入message消息提示组件
+import { Message } from 'element-ui'
+
+// 导入自定义消息提示
+import exceptionMessage from './exception-message'
 
 // 创建axios实例对象
 const service = axios.create({
@@ -39,12 +26,22 @@ service.interceptors.request.use(
 // 响应拦截器
 service.interceptors.response.use(
   (response) => {
-    return response
+    if (response.data.code === 200) {
+      return response.data.data
+    }
+    _showErrorMessage(response.data.code, response.data.msg)
   },
   (error) => {
+    console.log('2')
     return Promise.reject(error)
   }
 )
+
+// 错误消息提示
+const _showErrorMessage = (code, msg) => {
+  const message = exceptionMessage[code] || msg || '未知错误'
+  Message({ message, type: 'error' })
+}
 
 // 统一了传参处理
 const request = (options) => {
