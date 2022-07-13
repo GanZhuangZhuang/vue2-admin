@@ -166,5 +166,7 @@ h2 {
 .login-button {
   width: 100%;
   border-radius: 5px;
+  background-color: skyblue;
+  border: 2px solid skyblue;
 }
 </style>
