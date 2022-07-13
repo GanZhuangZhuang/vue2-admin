@@ -1,12 +1,10 @@
 <template>
-  <div>
-    header
-  </div>
+  <div>角色管理</div>
 </template>
 
 <script>
 export default {
-  name: 'index'
+  name: 'index.vue'
 }
 </script>
 

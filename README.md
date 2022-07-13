@@ -1,4 +1,4 @@
-# demo
+# vue-cms
 
 ## Project setup
 ```

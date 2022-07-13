@@ -1,7 +1,5 @@
 <template>
-  <div>
-    header
-  </div>
+  <div>控制台</div>
 </template>
 
 <script>

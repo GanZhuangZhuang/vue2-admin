@@ -29,20 +29,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.el-container {
+.el-container{
   height: 100%;
 }
 .el-header {
-  background-color: #18bc9c;
+  background-color: $header-bg-color;
   color: #333;
   line-height: 60px;
 }
+
 .el-aside {
-  background-color: #222d32;
+  background-color: $aside-bg-color;
   color: #333;
 }
+
 .el-main {
-  background-color: #ffffff;
+  background-color: $main-bg-color;
   color: #333;
 }
 </style>

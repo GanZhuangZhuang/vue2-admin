@@ -14,6 +14,7 @@
         <el-form-item prop="password">
           <el-input
             type="password"
+            clearable
             v-model.trim="loginForm.password"
             show-password
             placeholder="请输入密码"
@@ -26,15 +27,12 @@
               v-model.trim="loginForm.code"
               placeholder="请输入验证码"
             ></el-input>
-            <el-image
-              @click.stop="handleCodeRefresh"
-              :src="codeImageUrl"
-            ></el-image>
+            <el-image @click.stop="handleCodeRefresh" :src="codeImageUrl" />
           </div>
         </el-form-item>
         <el-form-item>
           <el-button
-            class="button-from"
+            class="login-button"
             :loading="loadingStatus"
             @click="handleVerifyForm"
             type="danger"
@@ -47,26 +45,27 @@
 </template>
 
 <script>
-import UserApi from '@/api/user.js'
+import UserApi from '@/api/user'
 import rules from './rules'
 import { mapActions } from 'vuex'
+
 export default {
   name: 'index',
   data() {
     return {
-      // loding加载状态
+      // loading加载状态
       loadingStatus: false,
       // 验证码路径
       codeImageUrl: '',
-      // 表单验证数据
+      // 登录参数
       loginForm: {
         username: 'duck',
         password: 'admin888',
-        code: '',
+        code: '111',
         token: ''
       },
-      // 表单验证
-      rules: rules
+      // 登录表单验证规则
+      rules
     }
   },
   created() {
@@ -74,16 +73,22 @@ export default {
   },
   methods: {
     /**
-     * 0调用接口获取登录验证码
+     * 调用接口获取验证码
      */
     async handleGetCaptcha() {
       const { captchaImg, token } = await UserApi.getCaptcha()
-
       this.codeImageUrl = captchaImg
       this.loginForm.token = token
     },
     /**
-     * 登录验证
+     * 验证码刷新
+     */
+    handleCodeRefresh() {
+      this.loginForm.code = ''
+      this.handleGetCaptcha()
+    },
+    /**
+     * 登录表单校验
      */
     handleVerifyForm() {
       this.$refs.form.validate((valid) => {
@@ -93,32 +98,23 @@ export default {
       })
     },
     /**
-     * 验证码点击刷新
-     */
-    handleCodeRefresh() {
-      this.loginForm.code = ''
-      this.handleGetCaptcha()
-    },
-    /**
      * 登录提交
      */
     async handleSubmitLogin() {
       try {
-        const token = await this.$store.dispatch('user/login', this.loginForm)
-        // const token = await this.login(this.loginForm)
+        const token = await this.login(this.loginForm)
         if (!token) return
         this.$notify({ title: '提示', message: '登录成功', type: 'success' })
         this.loadingStatus = true
-        await this.$router.push('/layout')
+        await this.$router.push('/')
       } catch (e) {
         console.log(e)
+      } finally {
+        this.loadingStatus = false
       }
-      this.loadingStatus = false
-
-      // this.$store.dispatch
     },
     /**
-     * vuex的登录
+     * vuex登录
      */
     ...mapActions({
       login: 'user/login'
@@ -127,7 +123,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .login-container {
   position: fixed;
   top: 0;
@@ -137,23 +133,6 @@ export default {
   font-family: Verdana;
   background-size: cover;
   background: url('../../assets/images/bg.jpg') no-repeat fixed center;
-}
-.el-image {
-  width: 200px;
-  height: 40px;
-  border-radius: 5px;
-  margin-left: 10px;
-  cursor: pointer;
-}
-.verify {
-  width: 100%;
-  display: flex;
-  align-items: center;
-}
-.login-form {
-  // 居中
-  margin: 10% auto 13%;
-  width: 25%;
 }
 h1 {
   text-align: center;
@@ -168,10 +147,24 @@ h2 {
   font-size: 30px;
   margin-bottom: 30px;
 }
-.button-from {
+.login-form {
+  margin: 10% auto 13%;
+  width: 20%;
+}
+.verify {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+.el-image {
+  width: 200px;
+  height: 40px;
+  border-radius: 5px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+.login-button {
   width: 100%;
   border-radius: 5px;
-  background: #66b1ff;
-  border: 1px solid #66b1ff;
 }
 </style>
