@@ -1,7 +1,3 @@
-/**
- * @author YangLing
- * @date 2022/7/11 14:01
- */
 
 export default {
   username: [

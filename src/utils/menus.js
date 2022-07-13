@@ -1,8 +1,3 @@
-/**
- * @author YangLing
- * @date 2022/7/13 10:34
- */
-
 export const filterMenus = (menus) => {
   const newMenus = []
 
