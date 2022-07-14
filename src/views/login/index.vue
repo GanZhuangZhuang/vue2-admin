@@ -64,6 +64,7 @@ export default {
         code: '111',
         token: ''
       },
+
       // 登录表单验证规则
       rules
     }

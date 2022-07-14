@@ -1,7 +1,3 @@
-/**
- * @author YangLing
- * @date 2022/7/11 14:13
- */
 import UserApi from '@/api/user'
 import { setItem, getItem, removeItem } from '@/utils/storage'
 
